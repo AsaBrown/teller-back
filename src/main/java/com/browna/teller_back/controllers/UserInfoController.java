@@ -16,7 +16,7 @@ public class UserInfoController {
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
-    @GetMapping
+    @GetMapping("/info")
     public UserInfoResponse getUserInfo(@RequestHeader("Authorization") String jwt) {
         Optional<User> user = userRepository.findByUsername(jwtService.extractUsername(jwt));
         return UserInfoResponse.builder().user(user).build();
