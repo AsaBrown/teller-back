@@ -16,7 +16,6 @@ public class AuthenticationController {
     private final AuthenticationService service;
 
     @PostMapping("/register")
-    @CrossOrigin(origins = {"http://localhost:3000"}, allowCredentials = "true")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ){
@@ -24,7 +23,6 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    @CrossOrigin(origins = {"http://localhost:3000"}, allowCredentials = "true")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody AuthenticationRequest request
     ) {

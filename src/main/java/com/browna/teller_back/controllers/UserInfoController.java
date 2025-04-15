@@ -17,7 +17,6 @@ public class UserInfoController {
     private final JwtService jwtService;
 
     @GetMapping
-    @CrossOrigin(origins = {"http://localhost:3000"}, allowCredentials = "true")
     public UserInfoResponse getUserInfo(@RequestHeader("Authorization") String jwt) {
         Optional<User> user = userRepository.findByUsername(jwtService.extractUsername(jwt));
         return UserInfoResponse.builder().user(user).build();
