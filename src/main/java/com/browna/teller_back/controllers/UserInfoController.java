@@ -4,6 +4,7 @@ import com.browna.teller_back.models.User;
 import com.browna.teller_back.payload.UserInfoResponse;
 import com.browna.teller_back.repositories.UserRepository;
 import com.browna.teller_back.services.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +18,8 @@ public class UserInfoController {
     private final JwtService jwtService;
 
     @GetMapping("/info")
-    public UserInfoResponse getUserInfo(@RequestHeader("Authorization") String jwt) {
-        Optional<User> user = userRepository.findByUsername(jwtService.extractUsername(jwt));
+    public UserInfoResponse getUserInfo(HttpServletRequest request) {
+        Optional<User> user = userRepository.findByUsername();
         return UserInfoResponse.builder().user(user).build();
     }
 }

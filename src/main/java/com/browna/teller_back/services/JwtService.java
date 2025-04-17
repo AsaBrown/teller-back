@@ -6,8 +6,11 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.WebUtils;
 
 import java.security.Key;
 import java.util.Date;
@@ -39,9 +42,7 @@ public class JwtService {
 
     public String generateToken(Map<String, Object> extraClaims,
                                 UserDetails userDetails) {
-        System.out.println("Current Time: " + System.currentTimeMillis());
         long expirationAddition = System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 30);
-        System.out.println("Expiration Time: " + expirationAddition);
         return Jwts
                 .builder()
                 .claims(extraClaims)
@@ -77,5 +78,13 @@ public class JwtService {
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(configProperties.jwtSigningKey());
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public String extractJwtFromCookie(HttpServletRequest request) {
+        Cookie cookie = WebUtils.getCookie(request, "jwtCookie");
+        if (cookie != null) {
+            return cookie.getValue();
+        }
+        return null;
     }
 }
