@@ -4,7 +4,6 @@ import com.browna.teller_back.payload.AuthenticationRequest;
 import com.browna.teller_back.payload.AuthenticationResponse;
 import com.browna.teller_back.payload.RegisterRequest;
 import com.browna.teller_back.services.AuthenticationService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,12 +30,11 @@ public class AuthenticationController {
     ) {
         AuthenticationResponse payload = service.authenticate(request);
 
-        Cookie jwtCookie = new Cookie("jwtCookie", payload.getToken());
-        jwtCookie.setHttpOnly(true);
-        jwtCookie.setSecure(false);
-        jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(3600);
-        response.addCookie(jwtCookie);
+        String cookieHeader = String.format(
+                "jwtCookie=%s; Path=/; Domain=localhost; Max-Age=3600; HttpOnly; SameSite=None;",
+                payload.getToken()
+        );
+        response.addHeader("Set-Cookie", cookieHeader);
 
         return ResponseEntity.ok(payload);
     }
