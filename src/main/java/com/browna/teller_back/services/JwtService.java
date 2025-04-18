@@ -87,4 +87,11 @@ public class JwtService {
         }
         return null;
     }
+    public String extractUserNameFromCookie(HttpServletRequest request) {
+        String jwt = extractJwtFromCookie(request);
+        if (jwt != null) {
+            return extractUsername(jwt);
+        }
+        return null;
+    }
 }
