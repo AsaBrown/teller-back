@@ -23,6 +23,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'microsoft'
+          cache: "gradle"
 
       - name: Make gradlew executable
         run: chmod +x gradlew
