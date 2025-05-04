@@ -1,5 +1,6 @@
 package com.browna.teller_back.controllers;
 
+import com.browna.teller_back.config.CookieProperties;
 import com.browna.teller_back.payload.AuthenticationRequest;
 import com.browna.teller_back.payload.AuthenticationResponse;
 import com.browna.teller_back.payload.RegisterRequest;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
     private final AuthenticationService service;
+    private final CookieProperties cookieProperties;
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
@@ -31,8 +33,11 @@ public class AuthenticationController {
         AuthenticationResponse payload = service.authenticate(request);
 
         String cookieHeader = String.format(
-                "jwtCookie=%s; Path=/; Domain=localhost; Max-Age=3600; HttpOnly; SameSite=None;",
-                payload.getToken()
+                "jwtCookie=%s; Domain=%s; Max-Age=3600; HttpOnly; SameSite=%s; %s;",
+                payload.getToken(),
+                cookieProperties.getDomain(),
+                cookieProperties.getSameSite(),
+                cookieProperties.isSecure() ? "Secure" : ""
         );
         response.addHeader("Set-Cookie", cookieHeader);
 
