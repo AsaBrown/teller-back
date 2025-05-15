@@ -20,8 +20,7 @@ import java.util.List;
 @Entity
 @Table(name = "users",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
+                @UniqueConstraint(columnNames = "username")
         },
         schema  = "tellerdata")
 public class User implements UserDetails {
@@ -33,12 +32,8 @@ public class User implements UserDetails {
 
     @NotBlank
     @Size(max = 20)
-    private String username;
-
-    @NotBlank
-    @Size(max = 50)
     @Email
-    private String email;
+    private String username;
 
     @NotBlank
     @Size(max = 120)

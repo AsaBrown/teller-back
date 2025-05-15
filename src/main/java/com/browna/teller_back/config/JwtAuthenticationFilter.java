@@ -29,12 +29,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         final String jwt = jwtService.extractJwtFromCookie(request);
         if(jwt == null){
-            System.out.println("JWT IS NULL");
             filterChain.doFilter(request, response);
             return;
         }
         final String username = jwtService.extractUsername(jwt);
-        System.out.println("Username: " + username);
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             if(jwtService.isJwtValid(jwt, userDetails)) {
