@@ -33,11 +33,11 @@ public class AuthenticationController {
         AuthenticationResponse payload = service.authenticate(request);
 
         String cookieHeader = String.format(
-                "jwtCookie=%s; Domain=%s; Max-Age=3600; HttpOnly; SameSite=%s; %s;",
+                "jwtCookie=%s; Domain=%s; Max-Age=3600; HttpOnly; Path=/; SameSite=%s; %s",
                 payload.getToken(),
                 cookieProperties.getDomain(),
                 cookieProperties.getSameSite(),
-                cookieProperties.isSecure() ? "Secure" : ""
+                cookieProperties.isSecure() ? "Secure;" : ""
         );
         response.addHeader("Set-Cookie", cookieHeader);
 
