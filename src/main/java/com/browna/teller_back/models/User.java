@@ -39,12 +39,16 @@ public class User implements UserDetails {
     @Size(max = 120)
     private String password;
 
+    @NotBlank
+    @Size(max = 20)
+    private String firstName;
+
+    @NotBlank
+    @Size(max = 20)
+    private String lastName;
+
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    public @NotBlank @Size(max = 20) String getUsername() {
-        return username;
-    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -69,13 +73,5 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
-    }
-
-    public @NotBlank @Size(max = 120) String getPassword() {
-        return password;
-    }
-
-    public void setPassword(@NotBlank @Size(max = 120) String password) {
-        this.password = password;
     }
 }

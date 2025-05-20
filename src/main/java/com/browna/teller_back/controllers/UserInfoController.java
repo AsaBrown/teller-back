@@ -20,6 +20,12 @@ public class UserInfoController {
     @GetMapping("/info")
     public UserInfoResponse getUserInfo(HttpServletRequest request) {
         Optional<User> user = userRepository.findByUsername(jwtService.extractUserNameFromCookie(request));
-        return UserInfoResponse.builder().user(user).build();
+        return user.map(value ->
+                UserInfoResponse.builder()
+                        .username(value.getUsername())
+                        .firstName(value.getFirstName())
+                        .lastName(value.getLastName())
+                        .build())
+                .orElse(null);
     }
 }
